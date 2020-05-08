@@ -1,0 +1,24 @@
+@startuml
+
+actor InventoryManager
+participant ScheduleController
+participant IOrderBookLoader
+participant IOrderScheduler
+
+InventoryManager -> ScheduleController: schedule
+
+ScheduleController --> IOrderBookLoader: load
+
+ScheduleController --> IOrderScheduler: schedule
+
+IOrderScheduler --> OrderBook: getOrders
+
+IOrderScheduler --> Fleet: getPlanes
+
+IOrderScheduler --> Flight: create
+
+Flight --> FlightSegment: create
+
+IOrderScheduler  --> Plane: addOrder
+
+@enduml

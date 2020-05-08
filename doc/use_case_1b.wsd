@@ -1,0 +1,24 @@
+@startuml
+skinparam {
+    ActorBackgroundColor red
+    ActorBorderColor blue
+    BoundaryBackgroundColor #de935f
+    BoundaryBorderColor #f5871f
+    ControlBackgroundColor #b5bd68
+    ControlBorderColor #718c00
+    DatabaseBackgroundColor #8abeb7
+    DatabaseBorderColor #3e999f
+    EntityBackgroundColor #81a2be
+    EntityBorderColor #4271ae
+}
+
+actor inventory_manager
+boundary flight_schedule_boundary
+control flight_schedule_control
+entity flight_schedule_collection
+
+inventory_manager => flight_schedule_boundary: request_display_flight_schedule
+flight_schedule_boundary => flight_schedule_control: display_flight_schedule
+flight_schedule_control => flight_schedule_collection: get_all
+
+@enduml

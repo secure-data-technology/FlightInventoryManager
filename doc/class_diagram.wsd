@@ -1,0 +1,87 @@
+@startuml
+
+class Order {
+    id : int
+    boxCount : int = 1
+    destination : Location
+}
+
+class Plane {
+    id : int
+    orders : List<Order>
+    maximumBoxes : int
+    totalBoxes : int
+    addOrder(order : Order)
+}
+
+class Fleet {
+    planes : List<Plane>
+}
+
+class FlightSegment {
+   id : int
+   plane : Plane
+   departureLocation : Location
+   arrivalLocation : Location
+   departureTime : Date
+}
+
+class Flight {
+    id : int
+    flightSegments : Queue<FlightSegment>
+}
+
+enum Location {
+    Montreal
+    Toronto
+    Calgary
+    Vancouver
+}
+
+interface IOrderBookLoader {
+    Load(uri : string)
+}
+
+class OrderBook {
+  orders : Queue<Order>
+}
+
+interface IOrderScheduler {
+    Schedule(orderBook : OrderBook)
+}
+
+class ScheduleController {
+    Schedule(fleet: Fleet, scheduler : IOrderScheduler)
+}
+
+IOrderScheduler -- OrderBook
+
+Plane -- FlightSegment
+
+FlightSegment -- Location
+
+Plane -- Order
+
+Order -- Location
+
+Fleet *-- Plane
+
+Flight *-- FlightSegment
+
+IOrderBookLoader <-- JsonOrderBookLoader 
+
+IOrderBookLoader -- OrderBook
+
+IOrderScheduler <- SingleFlightSegmentScheduler
+
+IOrderScheduler <- MultipleFlightSegmentScheduler
+
+OrderBook o-- Order
+
+ScheduleController -- Fleet
+
+ScheduleController -- IOrderBookLoader
+
+ScheduleController -- IOrderScheduler
+
+@enduml
